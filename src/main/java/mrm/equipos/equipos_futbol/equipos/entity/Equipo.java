@@ -1,13 +1,21 @@
-package mrm.equipos.equipos_futbol.equipos;
+package mrm.equipos.equipos_futbol.equipos.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@Entity
 public class Equipo extends AbstractPersistable<Integer> {
+
+    // Para que nadie pueda usar el constructor aparte de Spring y esta misma clase, hago que el constructor sea protected, y pongo esta entidad en su propio paquete
+    protected Equipo() {}
+
     @Column(length = 40)
     private String nombre;
 

@@ -1,6 +1,5 @@
 package mrm.equipos.equipos_futbol.manejo_de_errores;
 
-import mrm.equipos.equipos_futbol.equipos.manejo_de_errores.EquipoNoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
