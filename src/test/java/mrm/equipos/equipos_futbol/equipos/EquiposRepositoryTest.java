@@ -20,7 +20,7 @@ public class EquiposRepositoryTest { // Testea unitariamente el repositorio, usa
     private EquiposRepository equiposRepository;
 
     @Nested
-    class findByNombreIgnoreCaseFuncionaCorrectamente {
+    class findByNombreIgnoreCase {
         @Test
         public void findByNombreIgnoreCaseEncuentraEquipoConDistintoCase() {
             Set<Equipo> resultados = equiposRepository.findByNombreContainingIgnoreCase("boca");
