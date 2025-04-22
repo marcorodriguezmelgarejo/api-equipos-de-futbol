@@ -33,4 +33,9 @@ public class Equipo {
 
     @Column(length = 40)
     private String pais;
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Equipo && ((Equipo) object).getId().equals(id);
+    }
 }
