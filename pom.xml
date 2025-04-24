@@ -8,6 +8,7 @@
 		<version>3.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<packaging>jar</packaging>
 	<groupId>mrm.equipos</groupId>
 	<artifactId>equipos-futbol</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -87,6 +88,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>equipos</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
