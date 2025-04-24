@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class AuthenticationExceptionAdvice {
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<RespuestaError> entidadNoEncontradaHandler(AuthenticationException ex) {
+    public ResponseEntity<RespuestaError> entidadNoEncontradaHandler() {
         var respuestaError = new RespuestaError("Credenciales inválidas", HttpStatus.UNAUTHORIZED.value());
         return new ResponseEntity<>(respuestaError, HttpStatus.UNAUTHORIZED);
     }

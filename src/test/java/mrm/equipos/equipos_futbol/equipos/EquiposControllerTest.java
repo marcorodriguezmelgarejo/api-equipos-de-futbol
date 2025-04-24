@@ -2,10 +2,12 @@ package mrm.equipos.equipos_futbol.equipos;
 
 import mrm.equipos.equipos_futbol.equipos.DTO.EquipoDTO;
 import mrm.equipos.equipos_futbol.equipos.entity.Equipo;
+import mrm.equipos.equipos_futbol.seguridad.JWTokenService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
@@ -21,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(EquiposController.class)
+@AutoConfigureMockMvc(addFilters = false) // Remueve el filtro de seguridad para probar más fácilmente (la autenticación ya la probé a mano, no la voy a probar en forma unitaria. En un desarrollo real sí lo haría)
 @AutoConfigureJsonTesters
 public class EquiposControllerTest { // Testea el controller en forma unitaria, mockeando el repositorio
 
@@ -35,6 +38,9 @@ public class EquiposControllerTest { // Testea el controller en forma unitaria, 
 
     @Autowired
     private JacksonTester<EquipoDTO> jsonDTO;
+
+    @MockitoBean
+    private JWTokenService jwTokenService; // No se usa, pero si no pinchaba al injectar dependencias
 
     @Nested
     class findByNombre {
