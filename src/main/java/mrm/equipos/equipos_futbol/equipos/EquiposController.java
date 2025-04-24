@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/equipos")
 @AllArgsConstructor
 public class EquiposController {
     // NOTA: no creo un Servicio porque no hay comportamiento de dominio. Si tuviéramos que realizar, junto con la operación de CRUD, operaciones particulares del dominio de los equipos de fútbol, agregaría una clase EquiposService anotada con @Service, y la invocaría desde el controller para realizar las operaciones deseadas. Otra alternativa que muchas veces prefiero, es agregar el comportamiento directamente en la clase de modelo, en este caso Equipo, para mantener el encapsulamiento y agrupar la lógica con los datos, como dicta el Paradigma Orientado a Objetos.
@@ -20,22 +21,22 @@ public class EquiposController {
 
     private ModelMapper mapper;
 
-    @GetMapping("/equipos")
+    @GetMapping
     public Set<EquipoDTO> getEquipos() {
         return repo.findAll().stream().map(this::dto).collect(Collectors.toSet());
     }
 
-    @GetMapping("/equipos/{id}")
+    @GetMapping("/{id}")
     public EquipoDTO getEquipoById(@PathVariable Integer id) {
         return repo.findById(id).map(this::dto).orElseThrow(EquipoNoEncontradoException::new);
     }
 
-    @GetMapping("/equipos/buscar")
+    @GetMapping("/buscar")
     public Set<EquipoDTO> findByNombre(@RequestParam("nombre") String nombre) {
         return repo.findByNombreContainingIgnoreCase(nombre).stream().map(this::dto).collect(Collectors.toSet());
     }
 
-    @PostMapping("/equipos")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EquipoDTO addEquipo(@RequestBody EquipoDTO equipoDTO) {
         if (repo.existsById(equipoDTO.getId()))
@@ -44,7 +45,7 @@ public class EquiposController {
         return dto(equipoAgregado);
     }
 
-    @PutMapping("/equipos/{id}")
+    @PutMapping("/{id}")
     public EquipoDTO replaceEquipo(@PathVariable Integer id, @RequestBody EquipoDTO equipoActualizado) {
         return repo.findById(id)
                 .map(equipoAnterior ->
@@ -58,7 +59,7 @@ public class EquiposController {
                 .orElseThrow(EquipoNoEncontradoException::new);
     }
 
-    @DeleteMapping("/equipos/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEquipo(@PathVariable Integer id) {
         repo.findById(id).ifPresentOrElse(equipo -> repo.delete(equipo),
