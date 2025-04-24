@@ -3,6 +3,7 @@ package mrm.equipos.equipos_futbol.seguridad;
 import lombok.AllArgsConstructor;
 import mrm.equipos.equipos_futbol.seguridad.DTO.Credenciales;
 import mrm.equipos.equipos_futbol.seguridad.DTO.TokenDTO;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class LoginController {
     private AuthenticationManager authenticationManager;
