@@ -1,14 +1,16 @@
 package mrm.equipos.equipos_futbol.equipos;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import mrm.equipos.equipos_futbol.equipos.DTO.EquipoDTO;
 import mrm.equipos.equipos_futbol.equipos.entity.Equipo;
 import mrm.equipos.equipos_futbol.equipos.manejo_de_errores.EquipoNoEncontradoException;
+import mrm.equipos.equipos_futbol.manejo_de_errores.SolicitudInvalidaException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,15 +41,18 @@ public class EquiposController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EquipoDTO addEquipo(@RequestBody EquipoDTO equipoDTO) {
+    public EquipoDTO addEquipo(@Valid @RequestBody EquipoDTO equipoDTO, BindingResult bindingResult) {
+        validarErrores(bindingResult);
         if (repo.existsById(equipoDTO.getId()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST); // Idealmente agregaríamos un mensaje de error personalizado en lugar de el genérico
+            throw new SolicitudInvalidaException(); // Idealmente agregaríamos un mensaje de error personalizado en lugar de el genérico
         Equipo equipoAgregado = repo.save(model(equipoDTO));
         return dto(equipoAgregado);
     }
 
     @PutMapping("/{id}")
-    public EquipoDTO replaceEquipo(@PathVariable Integer id, @RequestBody EquipoDTO equipoActualizado) {
+    public EquipoDTO replaceEquipo(@PathVariable Integer id, @Valid @RequestBody EquipoDTO equipoActualizado,
+                                   BindingResult bindingResult) {
+        validarErrores(bindingResult);
         return repo.findById(id)
                 .map(equipoAnterior ->
                         {
@@ -66,6 +71,11 @@ public class EquiposController {
         repo.findById(id).ifPresentOrElse(equipo -> repo.delete(equipo),
                 () -> {throw new EquipoNoEncontradoException();}
         );
+    }
+
+    private void validarErrores(BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            throw new SolicitudInvalidaException();
     }
 
     private EquipoDTO dto(Equipo modelEquipo) {
